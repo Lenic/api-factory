@@ -27,7 +27,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@lenic/api-factory': getPath('src'),
+      '@lenic/api-factory/lib/engine': getPath('lib/engine.js'),
+      '@lenic/api-factory': getPath('lib'),
     },
   },
   plugins: [

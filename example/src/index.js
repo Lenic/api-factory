@@ -1,6 +1,6 @@
 import ajax from '@lenic/api-factory';
+import engine from '@lenic/api-factory/lib/engine';
 
-import engine from '../../src/engine';
 import interceptors from './interceptor';
 
 const api = ajax({
