@@ -8,7 +8,7 @@
           "chrome": "49",
           "node": "current"
         },
-        "modules": "cjs"
+        "modules": false
       }
     ]
   ],

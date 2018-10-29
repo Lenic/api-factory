@@ -2,8 +2,6 @@ import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 
-import babelConfig from './babel.json';
-
 export default {
   input: 'src/engine.js',
   external: ['@lenic/deferred', 'axios'],
@@ -11,13 +9,13 @@ export default {
     file: 'lib/engine.js',
     format: 'cjs',
     sourcemap: true,
+    exports: 'named',
   },
   plugins: [
     resolve(),
     commonjs(),
     babel({
-      babelrc: false,
-      ...babelConfig,
+      runtimeHelpers: true,
       exclude: 'node_modules/**'
     })
   ]
