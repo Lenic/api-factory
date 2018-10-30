@@ -9,13 +9,12 @@ export default {
     file: 'lib/engine.js',
     format: 'cjs',
     sourcemap: true,
-    exports: 'named',
+    exports: 'named'
   },
   plugins: [
     resolve(),
     commonjs(),
     babel({
-      runtimeHelpers: true,
       exclude: 'node_modules/**'
     })
   ]

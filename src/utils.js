@@ -87,6 +87,6 @@ export function getDefaultValue(method, target) {
 
       return acc;
     },
-    {},
+    {}
   );
 }

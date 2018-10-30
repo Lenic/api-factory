@@ -1,6 +1,6 @@
 {
   "name": "@lenic/api-factory",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Another ajax request wrapper.",
   "main": "lib/index.js",
   "directories": {
@@ -8,6 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
+    "format": "prettier --write {**/*.js,**/*.jsx,**/*.less}",
     "build": "rollup -c config/rollup.default.js && rollup -c config/rollup.engine.js",
     "start": "webpack-dev-server --config example/config/webpack.config.js"
   },
@@ -42,7 +43,6 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/runtime": "^7.1.2",
     "@lenic/deferred": "^1.0.1",
@@ -53,7 +53,7 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "underscore": "^1.8.3",
-    "webpack": "^4.23.0",
+    "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
   },

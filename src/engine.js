@@ -15,7 +15,7 @@ export default function send(opts, canceled) {
     responseType: opts.responseType,
     headers: opts.headers,
     data: opts.body,
-    cancelToken: source.token,
+    cancelToken: source.token
   };
 
   axios.request(parameter).then(
@@ -23,7 +23,7 @@ export default function send(opts, canceled) {
       defer.resolve({
         code: v.status,
         data: v.data,
-        headers: v.headers,
+        headers: v.headers
       }),
     e => {
       if (axios.isCancel(e)) {
@@ -36,7 +36,7 @@ export default function send(opts, canceled) {
           defer.reject({
             code: e.response.status,
             data: e.response.data,
-            headers: e.response.headers,
+            headers: e.response.headers
           });
         } else if (e.request) {
           // The request was made but no response was received
@@ -45,18 +45,18 @@ export default function send(opts, canceled) {
           defer.reject({
             code: -1,
             data: 'no received',
-            headers: {},
+            headers: {}
           });
         } else {
           // Something happened in setting up the request that triggered an Error
           defer.reject({
             code: 0,
             data: 'send error',
-            headers: {},
+            headers: {}
           });
         }
       }
-    },
+    }
   );
 
   return {
@@ -65,6 +65,6 @@ export default function send(opts, canceled) {
       source.cancel('Operation canceled by the abort manual.');
 
       return cancel.promise;
-    },
+    }
   };
 }

@@ -1,9 +1,17 @@
-function* each(list) {
-  for (let i = 0; i < list.length; i++) {
-    const item = list[i];
+function each(list) {
+  let index = 0;
 
-    yield item;
-  }
+  return {
+    next() {
+      const currentIndex = index;
+      index++;
+
+      return {
+        value: list[currentIndex],
+        done: currentIndex >= list.length
+      };
+    }
+  };
 }
 
 export default class Pipeline {

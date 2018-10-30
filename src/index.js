@@ -1,5 +1,3 @@
-/* eslint-disable no-invalid-this */
-
 import _ from 'underscore';
 import Deferred from '@lenic/deferred';
 
@@ -7,47 +5,48 @@ import Descriptor from './descriptor';
 
 const CanceledObject = {};
 
-export default descriptor => {
+export default function factory(descriptor) {
   const desc = new Descriptor(descriptor);
 
   return function(query, body, opts) {
-    const obj = { sendResult: null },
-      fn = async (method, preFilter, context) => {
-        if (obj.sendResult) {
-          return await obj.sendResult.abort();
-        }
+    const obj = { sendResult: null };
 
-        let ajaxOption = desc.makeRequest(method, query, body, context);
-        ajaxOption = await desc.interceptors.request.exec(ajaxOption, opts);
+    function fn(method, preFilter, context) {
+      if (obj.sendResult) {
+        return obj.sendResult.abort();
+      }
 
-        if (_.isFunction(preFilter)) {
-          preFilter(ajaxOption);
-        }
+      const defer = Deferred();
 
-        const defer = Deferred();
+      desc.interceptors.request
+        .exec(desc.makeRequest(method, query, body, context), opts)
+        .then(ajaxOption => {
+          if (_.isFunction(preFilter)) {
+            preFilter(ajaxOption);
+          }
 
-        obj.sendResult = desc.engine(ajaxOption, CanceledObject);
-        obj.sendResult.promise.then(
-          async v => {
-            obj.sendResult = null;
-            if (v === CanceledObject) {
-              return;
+          obj.sendResult = desc.engine(ajaxOption, CanceledObject);
+          obj.sendResult.promise.then(
+            v => {
+              obj.sendResult = null;
+              if (v === CanceledObject) {
+                return;
+              }
+
+              desc.interceptors.response
+                .exec(v, ajaxOption, opts)
+                .then(defer.resolve, defer.reject);
+            },
+            e => {
+              obj.sendResult = null;
+
+              desc.interceptors.response.exec(e, ajaxOption, opts).then(defer.reject, defer.reject);
             }
+          );
+        });
 
-            defer.resolve(await desc.interceptors.response.exec(v, ajaxOption, opts));
-          },
-          async e => {
-            obj.sendResult = null;
-
-            const result = await desc.interceptors.response.exec(e, ajaxOption, opts);
-            if (result) {
-              defer.reject(result);
-            }
-          },
-        );
-
-        return await defer.promise;
-      };
+      return defer.promise;
+    }
 
     obj.get = (preFilter, context) => fn('GET', preFilter, context);
     obj.post = (preFilter, context) => fn('POST', preFilter, context);
@@ -57,4 +56,4 @@ export default descriptor => {
 
     return obj;
   };
-};
+}

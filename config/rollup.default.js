@@ -9,13 +9,12 @@ export default {
     file: 'lib/index.js',
     format: 'cjs',
     sourcemap: true,
-    exports: 'named',
+    exports: 'named'
   },
   plugins: [
     resolve(),
     commonjs(),
     babel({
-      runtimeHelpers: true,
       exclude: 'node_modules/**'
     })
   ]

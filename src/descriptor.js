@@ -15,7 +15,7 @@ export default class Descriptor {
      */
     this.interceptors = {
       request: convertPipeline(desc.interceptors && desc.interceptors.request),
-      response: convertPipeline(desc.interceptors && desc.interceptors.response),
+      response: convertPipeline(desc.interceptors && desc.interceptors.response)
     };
 
     /**
@@ -30,7 +30,7 @@ export default class Descriptor {
      */
     const { url } = desc;
     if (!url) {
-      throw new TypeError('Can\'t be empty. Must be a value!');
+      throw new TypeError("Can't be empty. Must be a value!");
     }
     this.$url = _.isFunction(url) ? url : () => url;
 
@@ -89,7 +89,7 @@ export default class Descriptor {
         headers: this.$headers,
         url: this.$url.call(context, params || {}, context),
         responseType: this.$responseType,
-        query: _.omit(params, ...this.$optionParams),
+        query: _.omit(params, ...this.$optionParams)
       };
 
     if (method === 'POST' || method === 'PUT') {

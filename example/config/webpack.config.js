@@ -14,29 +14,27 @@ module.exports = {
     publicPath: '/',
     filename: 'js/[name].js',
     path: getPath('example/dist'),
-    chunkFilename: 'js/chunks/[id].js',
+    chunkFilename: 'js/chunks/[id].js'
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-    ],
+        loader: 'babel-loader'
+      }
+    ]
   },
   resolve: {
     alias: {
-      '@lenic/api-factory/lib/engine': getPath('lib/engine.js'),
-      '@lenic/api-factory': getPath('lib'),
+      '@lenic/api-factory': getPath('.'),
     },
   },
   plugins: [
-    new webpack.NamedChunksPlugin(),
     new HtmlWebpackPlugin({
       title: 'Api Factory Demo',
-      template: getPath('example/config/index.html'),
-    }),
+      template: getPath('example/config/index.html')
+    })
   ],
   devServer: {
     before: function(app) {
