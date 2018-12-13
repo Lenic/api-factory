@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import { convertPipeline, convertDefaultValue, getDefaultValue } from './utils';
+import { convertPipeline, convertDefaultValue, getDefaultValue, lowerCaseObject } from './utils';
 
 export default class Descriptor {
   constructor(desc) {
@@ -21,9 +21,9 @@ export default class Descriptor {
     /**
      * 设置的默认参数。
      */
-    this.$headers = desc.headers || {};
     this.$optionParams = desc.optionParams || [];
     this.$responseType = desc.responseType || 'json';
+    this.$headers = lowerCaseObject(desc.headers || {});
 
     /**
      * 初始 URL 处理。
@@ -93,10 +93,8 @@ export default class Descriptor {
       };
 
     if (method === 'POST' || method === 'PUT') {
-      opts.headers['content-type'] = 'application/json; charset=UTF-8';
-      opts.body = this.convertBody(method, body, context);
-    } else if (method === 'UPLOAD') {
-      opts.headers['content-type'] = 'multipart/form-data; charset=UTF-8';
+      !opts.headers['content-type'] &&
+        (opts.headers['content-type'] = 'application/json; charset=UTF-8');
       opts.body = this.convertBody(method, body, context);
     }
 

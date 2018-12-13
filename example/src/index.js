@@ -1,5 +1,5 @@
 import ajax from '@lenic/api-factory';
-import engine from '@lenic/api-factory/lib/engine';
+import engine from '@lenic/api-factory/lib/xhrEngine';
 
 import interceptors from './interceptor';
 
@@ -13,19 +13,19 @@ const api = ajax({
       defaultValue: {
         get: () => Date.now(),
         put: 34,
-        post: () => (~Date.now()).toString(16),
+        post: () => (~Date.now()).toString(16)
       }
-    },
+    }
   },
   body: {
     web: {
       defaultValue: {
-        post: () => (~~(Math.random()*(1 << 24))).toString(16),
-        put: 22,
-      },
-    },
-  },
-})
+        post: () => (~~(Math.random() * (1 << 24))).toString(16),
+        put: 22
+      }
+    }
+  }
+});
 
 class DataSource {
   constructor() {
@@ -35,16 +35,22 @@ class DataSource {
       scores: {
         math: 89,
         chinese: 95,
-        english: 78,
-      },
-    }
+        english: 78
+      }
+    };
 
-    this.dataApi = api(() => `/students/${this.$data.id}`, {
-      name: () => this.$data.name,
-      math: () => this.$data.scores.math,
-      chinese: () => this.$data.scores.chinese,
-      english: () => this.$data.scores.english,
-    });
+    this.dataApi = api(
+      {
+        url: () => `/students/${this.$data.id}`,
+        wait: 3000
+      },
+      {
+        name: () => this.$data.name,
+        math: () => this.$data.scores.math,
+        chinese: () => this.$data.scores.chinese,
+        english: () => this.$data.scores.english
+      }
+    );
 
     this.$domContainer = document.querySelector('#ulList');
   }
@@ -56,31 +62,31 @@ class DataSource {
   send() {
     this.dataApi.post().then(
       v => {
-        const li = document.createElement('li')
-          , pre = document.createElement('pre');
+        const li = document.createElement('li'),
+          pre = document.createElement('pre');
 
-        pre.innerText = JSON.stringify(v, null, ' ');
+        pre.innerText = JSON.stringify(v);
         li.appendChild(pre);
 
         this.$domContainer.appendChild(li);
       },
       e => {
-        const li = document.createElement('li')
-          , pre = document.createElement('pre');
+        const li = document.createElement('li'),
+          pre = document.createElement('pre');
 
-        pre.innerText = JSON.stringify(e, null, ' ');
+        pre.innerText = JSON.stringify(e);
         li.appendChild(pre);
 
         this.$domContainer.appendChild(li);
-      },
+      }
     );
   }
 }
 
 const dataSource = new DataSource();
 
-document.querySelector('#txtChinese')
+document
+  .querySelector('#txtChinese')
   .addEventListener('blur', e => dataSource.changeName(e.target.value));
 
-document.querySelector('#btnSubmit')
-  .addEventListener('click', () => dataSource.send());
+document.querySelector('#btnSubmit').addEventListener('click', () => dataSource.send());
