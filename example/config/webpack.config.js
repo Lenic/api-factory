@@ -1,5 +1,4 @@
 var path = require('path');
-var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 function getPath(dir) {
@@ -27,8 +26,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@lenic/api-factory': getPath('.'),
-    },
+      '@lenic/api-factory': getPath('.')
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -37,9 +36,14 @@ module.exports = {
     })
   ],
   devServer: {
+    host: '0.0.0.0',
     before: function(app) {
       app.post('/api/v1/students/1', function(req, res) {
-        res.json({ custom: 'response' });
+        if (req.query.wait) {
+          setTimeout(() => res.json({ custom: 'response' }), +req.query.wait);
+        } else {
+          res.json({ custom: 'response' });
+        }
       });
     }
   }

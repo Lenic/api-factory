@@ -90,3 +90,21 @@ export function getDefaultValue(method, target) {
     {}
   );
 }
+
+/**
+ * 将目标对象的所有键的名称改变为小写字符。
+ * @param {Object} target 目标对象
+ */
+export function lowerCaseObject(target) {
+  if (typeof target !== 'object' || Object.prototype.toString.call(target) === '[object Array]') {
+    return target;
+  }
+
+  const result = {};
+  for (const key in target) {
+    if (target.hasOwnProperty(key)) {
+      result[key.toLowerCase()] = target[key];
+    }
+  }
+  return result;
+}

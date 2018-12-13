@@ -43,11 +43,12 @@ const response = [
   },
   {
     filter: (result, ajaxOption, opts) => result.code === 200,
-    fn: (next, result, ajaxOption, opts) => next().then(() => {
-      result.data.list.push(2);
+    fn: (next, result, ajaxOption, opts) =>
+      next().then(() => {
+        result.data.list.push(2);
 
-      return result.data;
-    })
+        return result.data;
+      })
   },
   {
     filter: (result, ajaxOption, opts) => result.code === 200,
