@@ -41,7 +41,7 @@ class DataSource {
 
     this.dataApi = api(
       {
-        url: () => `/students/${this.$data.id}`,
+        url: () => `/students/${this.$data.id}?xml=false`,
         wait: 3000
       },
       {

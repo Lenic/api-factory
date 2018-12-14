@@ -17,7 +17,11 @@ export default function send(opts, canceled) {
 
   let url = opts.url;
   if (_.size(opts.query)) {
-    url = `${opts.url}?${encode(opts.query)}`;
+    if (opts.url.indexOf('?') === -1) {
+      url = `${opts.url}?${encode(opts.query)}`;
+    } else {
+      url = `${opts.url}&${encode(opts.query)}`;
+    }
   }
   xhr.open(opts.method, url, true);
 
