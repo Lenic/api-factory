@@ -15,6 +15,8 @@ export default function send(opts, canceled) {
     cancel = Deferred(),
     xhr = getXhr();
 
+  xhr.timeout = opts.timeout || 0;
+
   let url = opts.url;
   if (_.size(opts.query)) {
     if (opts.url.indexOf('?') === -1) {
@@ -60,7 +62,7 @@ export default function send(opts, canceled) {
     cancel.resolve();
   };
 
-  xhr.onerror = () =>
+  xhr.ontimeout = xhr.onerror = () =>
     defer.reject({
       code: -1,
       data: 'no received',

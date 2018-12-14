@@ -6,6 +6,7 @@ import interceptors from './interceptor';
 const api = ajax({
   engine,
   interceptors,
+  timeout: 5000,
   url: v => `/api/v1${v.url}`,
   optionParams: ['url'],
   params: {

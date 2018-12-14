@@ -1,6 +1,6 @@
 {
   "name": "@lenic/api-factory",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Another ajax request wrapper.",
   "main": "lib/index.js",
   "directories": {
@@ -8,6 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
+    "prepublish": "npm run build",
     "format": "prettier --write {**/*.js,**/*.jsx,**/*.less}",
     "start": "webpack-dev-server --config example/config/webpack.config.js",
     "build": "rollup -c config/rollup.default.js && rollup -c config/rollup.engine.js && rollup -c config/rollup.xhrEngine.js"

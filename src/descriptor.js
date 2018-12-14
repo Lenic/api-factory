@@ -21,6 +21,7 @@ export default class Descriptor {
     /**
      * 设置的默认参数。
      */
+    this.$timeout = desc.timeout;
     this.$optionParams = desc.optionParams || [];
     this.$responseType = desc.responseType || 'json';
     this.$headers = lowerCaseObject(desc.headers || {});
@@ -86,6 +87,7 @@ export default class Descriptor {
     const params = this.convertParams(method, query, context),
       opts = {
         method,
+        timeout: this.$timeout,
         headers: this.$headers,
         url: this.$url.call(context, params || {}, context),
         responseType: this.$responseType,
