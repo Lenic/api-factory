@@ -15,8 +15,6 @@ export default function send(opts, canceled) {
     cancel = Deferred(),
     xhr = getXhr();
 
-  xhr.timeout = opts.timeout || 0;
-
   let url = opts.url;
   if (_.size(opts.query)) {
     if (opts.url.indexOf('?') === -1) {
@@ -26,6 +24,8 @@ export default function send(opts, canceled) {
     }
   }
   xhr.open(opts.method, url, true);
+
+  xhr.timeout = opts.timeout || 0;
 
   for (let i in opts.headers) {
     xhr.setRequestHeader(i, opts.headers[i]);
