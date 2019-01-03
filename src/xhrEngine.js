@@ -2,6 +2,8 @@ import _ from 'underscore';
 import Deferred from '@lenic/deferred';
 import encode from 'querystring-es3/encode';
 
+import { needConvertJSON } from './utils';
+
 function getXhr() {
   if (window.XMLHttpRequest) {
     return new XMLHttpRequest();
@@ -28,7 +30,13 @@ export default function send(opts, canceled) {
   xhr.timeout = opts.timeout || 0;
 
   for (let i in opts.headers) {
-    xhr.setRequestHeader(i, opts.headers[i]);
+    const item = opts.headers[i];
+
+    if (_.isArray(item)) {
+      _.each(item, v => xhr.setRequestHeader(i, v));
+    } else {
+      xhr.setRequestHeader(i, item);
+    }
   }
 
   xhr.onload = () => {
@@ -70,11 +78,14 @@ export default function send(opts, canceled) {
     });
 
   try {
-    const contentType = opts.headers['content-type'];
-    if (contentType && contentType.indexOf('application/json') >= 0) {
-      xhr.send(JSON.stringify(opts.body));
+    if (needConvertJSON(opts.body)) {
+      if (!opts.headers['content-type']) {
+        xhr.setRequestHeader('content-type', 'application/json; charset=UTF-8');
+      }
+
+      xhr.send(JSON.stringify(opts.body) || null);
     } else {
-      xhr.send(opts.body);
+      xhr.send(opts.body || null);
     }
   } catch (error) {
     error && error.toString();

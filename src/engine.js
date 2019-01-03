@@ -14,7 +14,7 @@ export default function send(opts, canceled) {
     params: opts.query,
     responseType: opts.responseType,
     headers: opts.headers,
-    data: opts.body,
+    data: opts.body || null,
     timeout: opts.timeout,
     cancelToken: source.token
   };

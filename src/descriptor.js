@@ -1,6 +1,12 @@
 import _ from 'underscore';
 
-import { convertPipeline, convertDefaultValue, getDefaultValue, lowerCaseObject } from './utils';
+import {
+  convertPipeline,
+  getDefaultValue,
+  lowerCaseObject,
+  needConvertJSON,
+  convertDefaultValue
+} from './utils';
 
 export default class Descriptor {
   constructor(desc) {
@@ -88,16 +94,18 @@ export default class Descriptor {
       opts = {
         method,
         timeout: this.$timeout,
-        headers: this.$headers,
-        url: this.$url.call(context, params || {}, context),
         responseType: this.$responseType,
-        query: _.omit(params, ...this.$optionParams)
+        headers: _.extend({}, this.$headers),
+        query: _.omit(params, ...this.$optionParams),
+        url: this.$url.call(context, params || {}, context)
       };
 
     if (method === 'POST' || method === 'PUT') {
-      !opts.headers['content-type'] &&
-        (opts.headers['content-type'] = 'application/json; charset=UTF-8');
-      opts.body = this.convertBody(method, body, context);
+      if (needConvertJSON(body)) {
+        opts.body = this.convertBody(method, body, context);
+      } else {
+        opts.body = body;
+      }
     }
 
     return opts;

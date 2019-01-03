@@ -53,6 +53,7 @@ export default function factory(descriptor) {
       });
     }
 
+    obj.exec = fn;
     obj.get = (preFilter, context) => fn('GET', preFilter, context);
     obj.post = (preFilter, context) => fn('POST', preFilter, context);
     obj.put = (preFilter, context) => fn('PUT', preFilter, context);

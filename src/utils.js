@@ -2,7 +2,7 @@ import _ from 'underscore';
 
 import Pipeline from './pipeline';
 
-const defaultMethods = ['get', 'post', 'put', 'delete', 'upload'];
+const defaultMethods = ['get', 'post', 'put', 'delete'];
 
 /**
  * 将一般对象转换为 Pipeline 对象，一般对象的格式为：
@@ -107,4 +107,26 @@ export function lowerCaseObject(target) {
     }
   }
   return result;
+}
+
+/**
+ * 判断目标对象是否需要转换为 JSON
+ * @param {any} target 待验证的目标对象
+ */
+export function needConvertJSON(target) {
+  if (
+    _.isNull(target) ||
+    _.isUndefined(target) ||
+    _.isNaN(target) ||
+    (window.ArrayBuffer && target instanceof ArrayBuffer) ||
+    (window.ArrayBufferView && target instanceof ArrayBufferView) ||
+    (window.Blob && target instanceof Blob) ||
+    (window.Document && target instanceof Document) ||
+    (window.FormData && target instanceof FormData) ||
+    (window.String && target instanceof String) ||
+    (window.File && target instanceof File)
+  ) {
+    return false;
+  }
+  return true;
 }
