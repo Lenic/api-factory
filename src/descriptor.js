@@ -101,7 +101,7 @@ export default class Descriptor {
       };
 
     if (method === 'POST' || method === 'PUT') {
-      if (needConvertJSON(body)) {
+      if (_.isNull(body) || _.isUndefined(body) || needConvertJSON(body)) {
         opts.body = this.convertBody(method, body, context);
       } else {
         opts.body = body;

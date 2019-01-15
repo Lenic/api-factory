@@ -1,6 +1,6 @@
 {
   "name": "@lenic/api-factory",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Another ajax request wrapper.",
   "main": "lib/index.js",
   "directories": {
